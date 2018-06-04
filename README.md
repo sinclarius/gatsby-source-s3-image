@@ -1,5 +1,7 @@
 ## gatsby-source-s3-image
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/jessestuart/gatsby-source-s3-image.svg)](https://greenkeeper.io/)
+
 [![CircleCI][circleci-badge]][circleci-link]
 [![npm][npm-badge]][npm-link]
 [![Maintainability][codeclimate]][codeclimate 2]
