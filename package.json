@@ -13,6 +13,7 @@
     "aws-sdk": "2.411.0",
     "bluebird": "3.5.3",
     "exif-parser": "0.1.12",
+    "gatsby": "2.1.4",
     "gatsby-source-filesystem": "2.0.20",
     "lodash": "4.17.11",
     "luxon": "1.11.2"
@@ -50,7 +51,7 @@
   ],
   "license": "MIT",
   "scripts": {
-    "build": "babel src --out-dir . --ignore **/__tests__",
+    "build": "tsc",
     "lint": "eslint src/** --ext ts,tsx",
     "prepublishOnly": "yarn build",
     "semantic-release": "yarn build && semantic-release",
