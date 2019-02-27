@@ -1,9 +1,9 @@
-import exif from 'exif-parser';
-import fs from 'fs';
-import _ from 'lodash';
-import { DateTime } from 'luxon';
-import ExifDataType from './types/exif-data';
-import S3ImageAssetNode from './types/s3-image-asset-node';
+import exif from 'exif-parser'
+import fs from 'fs'
+import _ from 'lodash'
+import { DateTime } from 'luxon'
+import ExifDataType from './types/exif-data'
+import S3ImageAssetNode from './types/s3-image-asset-node'
 
 const {
   GraphQLFloat,

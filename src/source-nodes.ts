@@ -1,6 +1,7 @@
 import AWS from 'aws-sdk'
 import _ from 'lodash'
 
+// tslint:disable eslint-disable-next-line
 const { createRemoteFileNode } = require('gatsby-source-filesystem')
 
 // =================
@@ -59,8 +60,6 @@ export const sourceNodes = async (
   { actions, store, cache, createNodeId },
   { bucketName, domain, protocol = 'https' }: SourceS3Options
 ): Promise<any> => {
-  // tslint:disable
-  console.log('source nodes')
   const { createNode } = actions
 
   const listObjectsResponse = await S3.makeUnauthenticatedRequest(
@@ -103,26 +102,13 @@ export const sourceNodes = async (
         store,
       }
 
-      // const fileNode = await createS3RemoteFileNode(entityData)
-
-      let fileNode
-      try {
-        fileNode = await createRemoteFileNode({
-          cache,
-          createNode,
-          createNodeId,
-          store,
-          url: s3Url,
-        })
-        console.log({ fileNode })
-      } catch (err) {
-        // tslint:disable
-        console.error('Unable to create file node.', err)
+      const fileNode = await createS3RemoteFileNode(entityData)
+      if (!fileNode) {
+        return null
       }
-      // if (!fileNode) {
-      //   return null
-      // }
+
       entityData.localFile___NODE = fileNode.id
+
       return await createS3ImageAssetNode({
         ..._.pick(entityData, ['createNode', 'entity', 's3Url']),
         fileNode,
@@ -131,35 +117,33 @@ export const sourceNodes = async (
   )
 }
 
-// const createS3RemoteFileNode = async ({
-//   cache,
-//   createNode,
-//   store,
-//   s3Url,
-//   createNodeId,
-// }): Promise<any | void> => {
-//   try {
-//     return await createRemoteFileNode({
-//       cache,
-//       createNode,
-//       createNodeId,
-//       store,
-//       url: s3Url,
-//     })
-//   } catch (err) {
-//     // tslint:disable
-//     console.error('Unable to create file node.', err)
-//     return null
-//   }
-// }
+const createS3RemoteFileNode = async ({
+  cache,
+  createNode,
+  store,
+  s3Url,
+  createNodeId,
+}): Promise<any | void> => {
+  try {
+    return await createRemoteFileNode({
+      cache,
+      createNode,
+      createNodeId,
+      store,
+      url: s3Url,
+    })
+  } catch (err) {
+    // tslint:disable
+    console.error('Unable to create file node.', err)
+    return null
+  }
+}
 
 const createS3ImageAssetNode = async ({
   createNode,
   entity,
   fileNode,
   s3Url,
-  // @ts-ignore
-  // ...rest
 }): Promise<any> => {
   console.log({ entity })
   const { Key, ETag } = entity
