@@ -1,5 +1,5 @@
-import AWS from 'aws-sdk';
-import _ from 'lodash';
+import AWS from 'aws-sdk'
+import _ from 'lodash'
 
 const { createRemoteFileNode } = require('gatsby-source-filesystem')
 
@@ -124,13 +124,11 @@ export const sourceNodes = async (
       // }
       entityData.localFile___NODE = fileNode.id
       return await createS3ImageAssetNode({
-        ...entityData,
-        // done,
+        ..._.pick(entityData, ['createNode', 'entity', 's3Url']),
         fileNode,
       })
     })
   )
-  // done()
 }
 
 // const createS3RemoteFileNode = async ({
@@ -179,7 +177,7 @@ const createS3ImageAssetNode = async ({
     absolutePath: fileNode.absolutePath,
     Key,
     parent: fileNode.id,
-    // children: [fileNode.id],
+    children: [],
     internal: {
       content: s3Url,
       contentDigest: objectHash,

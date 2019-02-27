@@ -1,14 +1,18 @@
 import exif from 'exif-parser';
 import fs from 'fs';
-import { GraphQLFloat, GraphQLInt, GraphQLObjectType, GraphQLString } from 'gatsby/graphql';
 import _ from 'lodash';
 import { DateTime } from 'luxon';
-import ExifData from './types/exif-data';
+import ExifDataType from './types/exif-data';
 import S3ImageAssetNode from './types/s3-image-asset-node';
 
-/* tslint:disable */
+const {
+  GraphQLFloat,
+  GraphQLInt,
+  GraphQLObjectType,
+  GraphQLString,
+} = require('gatsby/graphql')
 
-export const resolveExifData = (image: S3ImageAssetNode): ExifData => {
+export const resolveExifData = (image: S3ImageAssetNode): ExifDataType => {
   console.log('resolve exif data', { image })
   const file = fs.readFileSync(image.absolutePath)
   const tags = exif.create(file).parse().tags
@@ -38,21 +42,21 @@ export interface ExtendNodeTypeOptions {
 
 export default ({
   type,
-  pathPrefix,
-  getNodeAndSavePathDependency,
+  // pathPrefix,
+  // getNodeAndSavePathDependency,
   // reporter,
   // name,
   // cache,
 }) => {
-  console.log({ type, getNodeAndSavePathDependency, pathPrefix })
   if (type.name !== 'S3ImageAsset') {
-    console.log('not S3ImageAsset')
     return {}
   }
 
   const ExifData = {
     resolve: image => {
-      console.log('resolve exif data')
+      // tslint:disable
+      console.log({ image })
+      // console.log('resolve exif data')
       // const file = getNodeAndSavePathDependency(image.parent, context.path)
       // const args = { ...fieldArgs }
 
@@ -62,7 +66,6 @@ export default ({
       }
     },
     type: new GraphQLObjectType({
-      name: 'EXIF',
       fields: {
         DateCreatedISO: { type: GraphQLString },
         DateTimeOriginal: { type: GraphQLInt },
@@ -74,21 +77,22 @@ export default ({
         Model: { type: GraphQLString },
         ShutterSpeedValue: { type: GraphQLFloat },
       },
+      name: 'EXIF',
     }),
   }
 
-  return {
+  return Promise.resolve({
     EXIF: {
       type: new GraphQLObjectType({
-        name: 'S3ImageAssetExifData',
         fields: {
           ETag: { type: GraphQLString },
           EXIF: ExifData,
           Key: { type: GraphQLString },
         },
+        name: 'S3ImageAssetExifData',
       }),
     },
-  }
+  })
   // return Promise.resolve({
   //   type: new GraphQLObjectType({
   //     name: 'ExifData',

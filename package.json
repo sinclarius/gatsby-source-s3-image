@@ -11,8 +11,9 @@
   },
   "peerDependencies": {
     "gatsby": "^2.1.0",
+    "gatsby-image": "^2.0.30",
     "gatsby-source-filesystem": "^2.0.20",
-    "graphql": "^0.13.0"
+    "react": "latest"
   },
   "dependencies": {
     "@babel/runtime": "7.3.4",
@@ -20,10 +21,10 @@
     "axios": "0.18.0",
     "bluebird": "3.5.3",
     "exif-parser": "0.1.12",
-    "gatsby": "latest",
-    "gatsby-source-filesystem": "latest",
+    "gatsby-image": "2.0.30",
     "lodash": "4.17.11",
-    "luxon": "1.11.3"
+    "luxon": "1.11.3",
+    "react": "16.8.3"
   },
   "devDependencies": {
     "@babel/cli": "7.2.3",
